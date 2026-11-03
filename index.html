@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vitrine de Sets</title>
+<meta name="theme-color" content="#08090c">
+<meta name="description" content="Vitrine, triagem e lista de cartas de Magic por edição.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="bgart"></div>
+<div id="app">
+  <header>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Edições"></div>
+    <div class="sp"></div>
+    <div class="seg" role="group" aria-label="Visualização">
+      <button id="vCar" aria-pressed="true">Carrossel</button>
+      <button id="vGrid" aria-pressed="false">Grade</button>
+      <button id="vTri" aria-pressed="false">Triagem</button>
+    </div>
+    <button class="btn" id="bRep">Pré-release</button>
+    <button class="btn" id="bLands">Lands</button>
+    <button class="btn" id="bEd">Edições</button>
+    <button class="btn" id="bVotes">Votos<span class="cnt" id="cntV">0</span></button>
+    <button class="btn" id="bList">Lista<span class="cnt" id="cnt">0</span></button>
+  </header>
+  <div class="filters">
+    <input type="search" id="q" placeholder="Buscar carta" aria-label="Buscar carta" autocomplete="off">
+    <div class="chips" id="chips" role="group" aria-label="Cor"></div>
+    <select id="selVar" aria-label="Variantes"><option value="all">Todas as versões</option><option value="main">Só principais</option><option value="var">Só variantes</option></select>
+    <select id="selRar" aria-label="Raridade"><option value="all">Toda raridade</option><option value="mythic">Mítica</option><option value="rare">Rara</option><option value="uncommon">Incomum</option><option value="common">Comum</option></select>
+    <div class="seg" id="modeSeg" role="group" aria-label="Adicionar como" title="Acabamento usado ao clicar na grade">
+      <button data-m="n" aria-pressed="true">Normal</button><button data-m="f" aria-pressed="false">Foil</button>
+    </div>
+    <span class="meta" id="resCount"></span>
+  </div>
+  <main id="main"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside id="drawer" aria-label="Lista">
+  <header><h2>Minha lista</h2><button class="btn" id="dClose">Fechar</button></header>
+  <div class="dset">
+    <label>Qualidade<select id="dQ"><option>M</option><option selected>NM</option><option>SP</option><option>MP</option><option>HP</option><option>D</option></select></label>
+    <label>Idioma<select id="dL"><option value="BR">Português (BR)</option><option value="EN" selected>Inglês (EN)</option><option>DE</option><option>ES</option><option>FR</option><option>IT</option><option>JP</option><option>KO</option><option>RU</option><option>TW</option></select></label>
+  </div>
+  <div class="dlist" id="dList"></div>
+  <div class="dfoot">
+    <div class="upd" id="upd"></div>
+    <div class="two"><button class="btn pri" id="bExp">Exportar CSV Liga</button><button class="btn" id="bCopy">Copiar CSV</button></div>
+    <button class="btn" id="bClear">Limpar lista</button>
+  </div>
+</aside>
+
+<section id="lands" class="page" role="dialog" aria-label="Lands por cor">
+  <header><h2>Lands por cor</h2><button class="btn" data-close="lands">Fechar</button></header>
+  <div class="page-body"><div class="vm-box" id="landsBox"></div></div>
+</section>
+
+<section id="rep" class="page" role="dialog" aria-label="Pré-release vs votos">
+  <header><h2>Pré-release vs votos</h2><button class="btn" data-close="rep">Fechar</button></header>
+  <div class="page-body">
+    <div class="vm-box">
+      <h3>CSV do ManaBox</h3>
+      <label class="col">Edição<select id="repSet"></select></label>
+      <div class="vm-two"><button class="btn pri" id="repPick">Escolher CSV</button><button class="btn" id="repDemo" hidden>Usar exemplo</button></div>
+      <input type="file" id="repFile" accept=".csv,text/csv" hidden>
+      <div class="vm-info">Cruza por Scryfall ID, depois sigla + número, depois nome. Foil conta como a mesma carta. Usa os votos deste aparelho. O arquivo é lido só aqui, não sai do navegador.</div>
+      <div class="vm-info" id="repStat" role="status"></div>
+    </div>
+    <div id="repOut"></div>
+  </div>
+</section>
+
+<section id="ed" class="page" role="dialog" aria-label="Edições e backup">
+  <header><h2>Edições e backup</h2><button class="btn" id="edClose">Fechar</button></header>
+  <div class="page-body">
+    <div class="vm-box">
+      <h3>Adicionar edição</h3>
+      <form id="edAddForm" class="inline">
+        <input id="edCode" placeholder="Sigla, ex.: mh3" maxlength="6" autocapitalize="none" autocomplete="off" aria-label="Sigla da edição">
+        <button class="btn pri" type="submit">Adicionar</button>
+      </form>
+      <div class="vm-info">Busca no Scryfall todas as versões (<b>e:sigla</b>, com variantes e extras). A sigla está na página da edição no Scryfall.</div>
+    </div>
+    <div class="vm-box">
+      <h3>Suas edições</h3>
+      <div id="edList"></div>
+      <button class="btn" id="edAll">Atualizar todas</button>
+      <div class="vm-info" id="edStat" role="status"></div>
+    </div>
+    <div class="vm-box">
+      <h3>Backup (votos, lista e preferências)</h3>
+      <div class="vm-two"><button class="btn pri" id="bkExp">Exportar JSON</button><button class="btn" id="bkImp">Importar JSON</button></div>
+      <input type="file" id="bkFile" accept="application/json,.json" hidden>
+      <div class="vm-info">Cada aparelho guarda os próprios dados. Para levar para outro, exporte aqui e importe lá. A importação mescla com o que já existe e não apaga nada.</div>
+      <div class="vm-info" id="bkStat" role="status"></div>
+    </div>
+    <div class="vm-info">Dados e imagens das cartas: <a href="https://scryfall.com" target="_blank" rel="noopener">Scryfall</a>. Magic: The Gathering é marca da Wizards of the Coast; app não oficial. Imagens são carregadas direto do Scryfall e guardadas só neste aparelho.</div>
+  </div>
+</section>
+
+<section id="vm" role="dialog" aria-label="Votos e impressão">
+  <header><h2>Votos e impressão</h2><button class="btn" id="vmClose">Fechar</button></header>
+  <div class="vm-body">
+    <div class="vm-col">
+      <div class="vm-box">
+        <h3>Resumo</h3>
+        <table id="vmSum"></table>
+      </div>
+      <div class="vm-box">
+        <h3>O que entra</h3>
+        <label><input type="checkbox" data-inc="s" checked> Bomba</label>
+        <label><input type="checkbox" data-inc="y" checked> Sim</label>
+        <label><input type="checkbox" data-inc="m" checked> Meh</label>
+        <label><input type="checkbox" data-inc="n" checked> Não</label>
+        <label class="col">Edição<select id="vmEd"></select></label>
+        <div class="vm-info" id="vmCount"></div>
+        <div class="vm-two"><button class="btn pri" id="vCsv">Exportar CSV</button><button class="btn" id="vCsvCopy">Copiar CSV</button></div>
+        <div class="vm-info">CSV no padrão Liga, com a coluna extra <b>Voto</b> no fim (Bomba, Sim, Meh, Não).</div>
+      </div>
+      <div class="vm-box">
+        <h3>Imprimir em A4 (PDF)</h3>
+        <label class="col">Cartas por página <span class="vm-info"><b id="ppOut"></b> · 9 = tamanho natural (63 × 88 mm)</span>
+          <input type="range" id="pp" min="9" max="48" step="1" value="18"></label>
+        <label><input type="checkbox" id="ppNames" checked> Nome e número sob a carta</label>
+        <label><input type="checkbox" id="ppMark" checked> Marcar o voto (borda e etiqueta colorida)</label>
+        <label><input type="checkbox" id="ppHi"> Alta resolução (mais pesado, imprime mais nítido)</label>
+        <div class="vm-info" id="ppInfo"></div>
+        <button class="btn pri" id="vPdf">Gerar PDF</button>
+        <div class="vm-info" id="ppStat"></div>
+      </div>
+    </div>
+    <div class="vm-prev">
+      <div class="pg" id="pg"></div>
+      <div class="pgnav"><button class="btn" id="pgPrev" aria-label="Página anterior">‹</button><span id="pgN"></span><button class="btn" id="pgNext" aria-label="Próxima página">›</button></div>
+    </div>
+  </div>
+</section>
+
+<div id="upBar" role="status" hidden><span>Nova versão do app disponível.</span><button class="btn pri" id="upGo">Recarregar</button></div>
+<div id="toast" role="status"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
