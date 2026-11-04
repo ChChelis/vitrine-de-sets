@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teste das etiquetas</title>
+<style>body{font:14px system-ui;background:#111;color:#eee;margin:16px}table{border-collapse:collapse}td,th{padding:3px 10px;border-bottom:1px solid #333;text-align:left}.bad{color:#ff8a8a}.ok{color:#7ee787}</style></head>
+<body><h1>Etiquetas: conjunto rotulado à mão</h1><div id="out">rodando…</div>
+<script type="module">
+import { loadRules, tagCard, label } from '../js/archetypes.js';
+const R = await loadRules('../data/rules.json');
+const set = await (await fetch((new URLSearchParams(location.search).get('set') || 'labeled') + '.json')).json();
+const st = {}, miss = [];
+let exact = 0;
+for (const c of set) {
+  const got = new Set([...tagCard(c, R)]), exp = new Set(c.esperado);
+  const fp = [...got].filter(t => !exp.has(t)), fn = [...exp].filter(t => !got.has(t));
+  for (const t of new Set([...got, ...exp])) { const s = st[t] ||= { tp: 0, fp: 0, fn: 0 }; if (got.has(t) && exp.has(t)) s.tp++; else if (got.has(t)) s.fp++; else s.fn++; }
+  if (!fp.length && !fn.length) exact++; else miss.push({ nome: c.name, a_mais: fp, faltou: fn });
+}
+const tags = Object.entries(st).map(([t, s]) => ({ tag: t, ...s, prec: s.tp + s.fp ? s.tp / (s.tp + s.fp) : null, rev: s.tp + s.fn ? s.tp / (s.tp + s.fn) : null }));
+const tot = tags.reduce((a, s) => ({ tp: a.tp + s.tp, fp: a.fp + s.fp, fn: a.fn + s.fn }), { tp: 0, fp: 0, fn: 0 });
+const result = { cartas: set.length, cartas_exatas: exact, taxa_cartas_exatas: +(exact / set.length).toFixed(3),
+  precisao: +(tot.tp / (tot.tp + tot.fp)).toFixed(3), revocacao: +(tot.tp / (tot.tp + tot.fn)).toFixed(3), tags, erros: miss };
+window.__result = result;
+const pc = x => x == null ? '—' : Math.round(x * 100) + '%';
+document.getElementById('out').innerHTML =
+  `<p>${exact}/${set.length} cartas com o conjunto de etiquetas exato (${pc(result.taxa_cartas_exatas)}) · precisão ${pc(result.precisao)} · revocação ${pc(result.revocacao)}</p>` +
+  '<table><tr><th>etiqueta</th><th>acertos</th><th>a mais</th><th>faltaram</th><th>precisão</th><th>revocação</th></tr>' +
+  tags.sort((a, b) => (b.tp + b.fn) - (a.tp + a.fn)).map(s => `<tr><td>${label(R, s.tag)}</td><td>${s.tp}</td><td class="${s.fp ? 'bad' : ''}">${s.fp}</td><td class="${s.fn ? 'bad' : ''}">${s.fn}</td><td>${pc(s.prec)}</td><td>${pc(s.rev)}</td></tr>`).join('') + '</table>' +
+  '<h2>Erros</h2><ul>' + miss.map(m => `<li><b>${m.nome}</b> — a mais: ${m.a_mais.join(', ') || '—'} · faltou: ${m.faltou.join(', ') || '—'}</li>`).join('') + '</ul>';
+document.title = 'pronto';
+</script></body></html>

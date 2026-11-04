@@ -1,0 +1,904 @@
+[
+ {
+  "name": "The Destruction of Praxis",
+  "set": "trk",
+  "type_line": "Sorcery",
+  "mana_cost": "{3}{B}{B}",
+  "cmc": 5.0,
+  "oracle_text": "Strange new worlds — All creatures get -X/-X until end of turn, where X is the number of differently named lands you control. If X is 6 or more, create two 2/1 red Klingon Warrior creature tokens with haste.",
+  "keywords": [
+   "Strange new worlds"
+  ],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "sweeper",
+   "tokens"
+  ]
+ },
+ {
+  "name": "Encounter the Unknown",
+  "set": "trk",
+  "type_line": "Instant",
+  "mana_cost": "{1}{R}{R}",
+  "cmc": 3.0,
+  "oracle_text": "Choose one —\n• Come in Peace — Exile the top two cards of your library. Until the end of your next turn, you may play those cards.\n• Shoot to Kill — Encounter the Unknown deals 2 damage to each creature and each player.",
+  "keywords": [
+   "Come in Peace",
+   "Shoot to Kill"
+  ],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "draw",
+   "sweeper"
+  ]
+ },
+ {
+  "name": "Khan, Despot by Design",
+  "set": "trk",
+  "type_line": "Legendary Creature — Human Rogue",
+  "mana_cost": "{4}{R}",
+  "cmc": 5.0,
+  "oracle_text": "Trample\nWhen Khan enters, he deals 1 damage to each opponent and each creature your opponents control.",
+  "keywords": [
+   "Trample"
+  ],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": "5",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "sweeper",
+   "etb",
+   "evasion"
+  ]
+ },
+ {
+  "name": "Crystalline Entity",
+  "set": "trk",
+  "type_line": "Artifact Creature — Elemental",
+  "mana_cost": "{8}",
+  "cmc": 8.0,
+  "oracle_text": "Flying\nWhen this creature enters, if you cast it, destroy all nonartifact creatures.",
+  "keywords": [
+   "Flying"
+  ],
+  "col": "",
+  "ci": "",
+  "produced": [],
+  "power": "7",
+  "toughness": "7",
+  "layout": "normal",
+  "rar": "mythic",
+  "esperado": [
+   "sweeper",
+   "etb",
+   "evasion",
+   "finisher"
+  ]
+ },
+ {
+  "name": "Horta",
+  "set": "trk",
+  "type_line": "Creature — Elemental",
+  "mana_cost": "{4}{R}{R}",
+  "cmc": 6.0,
+  "oracle_text": "Trample\nBasic landcycling {2} ({2}, Discard this card: Search your library for a basic land card, reveal it, put it into your hand, then shuffle.)",
+  "keywords": [
+   "Landcycling",
+   "Trample",
+   "Basic landcycling",
+   "Typecycling",
+   "Cycling"
+  ],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": "7",
+  "toughness": "6",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "evasion",
+   "finisher",
+   "ramp"
+  ]
+ },
+ {
+  "name": "Stable Wormhole",
+  "set": "trk",
+  "type_line": "Enchantment",
+  "mana_cost": "{2}{G}",
+  "cmc": 3.0,
+  "oracle_text": "Whenever you attack, create a tapped Planet land token named New Planet with \"{T}: Add one mana of any color.\"",
+  "keywords": [],
+  "col": "G",
+  "ci": "G",
+  "produced": [
+   "B",
+   "G",
+   "R",
+   "U",
+   "W"
+  ],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "tokens",
+   "ramp"
+  ]
+ },
+ {
+  "name": "Saurian Explorer",
+  "set": "trk",
+  "type_line": "Creature — Dinosaur Scout",
+  "mana_cost": "{3}{G}",
+  "cmc": 4.0,
+  "oracle_text": "Landfall — Whenever a land you control enters, this creature gets +2/+2 until end of turn.\n{6}: Create a tapped Planet land token named New Planet with \"{T}: Add one mana of any color.\" Activate only as a sorcery.",
+  "keywords": [
+   "Landfall"
+  ],
+  "col": "G",
+  "ci": "G",
+  "produced": [
+   "B",
+   "G",
+   "R",
+   "U",
+   "W"
+  ],
+  "power": "4",
+  "toughness": "3",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "landfall",
+   "pump",
+   "tokens",
+   "ramp"
+  ]
+ },
+ {
+  "name": "Locutus, the One Who Speaks",
+  "set": "trk",
+  "type_line": "Legendary Artifact Creature — Borg",
+  "mana_cost": "{W}{B}",
+  "cmc": 2.0,
+  "oracle_text": "Artifact creatures you control get +1/+1.\n{W}{B}, Discard this card: It deals 2 damage to target creature. You gain 2 life.",
+  "keywords": [],
+  "col": "BW",
+  "ci": "BW",
+  "produced": [],
+  "power": "1",
+  "toughness": "1",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "anthem",
+   "artifacts_matter",
+   "removal",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Resistance Is Futile",
+  "set": "trk",
+  "type_line": "Sorcery",
+  "mana_cost": "{1}{B}",
+  "cmc": 2.0,
+  "oracle_text": "Choose one —\n• Destroy target nonartifact creature.\n• Return target artifact creature card with mana value 3 or less from your graveyard to the battlefield.",
+  "keywords": [],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "removal",
+   "reanimate",
+   "graveyard",
+   "artifacts_matter"
+  ]
+ },
+ {
+  "name": "Eject the Warp Core",
+  "set": "trk",
+  "type_line": "Instant",
+  "mana_cost": "{1}{B}",
+  "cmc": 2.0,
+  "oracle_text": "Kicker—Sacrifice an artifact or creature. (You may sacrifice an artifact or creature in addition to any other costs as you cast this spell.)\nTarget creature gets -2/-2 until end of turn. If this spell was kicked, that creature gets -6/-6 until end of turn instead.",
+  "keywords": [
+   "Kicker"
+  ],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "removal",
+   "sacrifice"
+  ]
+ },
+ {
+  "name": "Malfunctioning Holodeck",
+  "set": "trk",
+  "type_line": "Artifact",
+  "mana_cost": "{2}{W}",
+  "cmc": 3.0,
+  "oracle_text": "Ward {2} (Whenever this artifact becomes the target of a spell or ability an opponent controls, counter it unless that player pays {2}.)\nWhen this artifact enters, exile target nonland permanent an opponent controls until this artifact leaves the battlefield.",
+  "keywords": [
+   "Ward"
+  ],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "etb",
+   "protection",
+   "removal"
+  ]
+ },
+ {
+  "name": "Federation Resupply",
+  "set": "trk",
+  "type_line": "Sorcery",
+  "mana_cost": "{1}{W}",
+  "cmc": 2.0,
+  "oracle_text": "Search your library for an Aura, Equipment, or Spacecraft card, reveal it, put it into your hand, then shuffle.\nBeam me up {3}{W} (You may cast this card from your graveyard for {3}{W} if you also return a creature you control to its owner's hand. Then exile this spell.)",
+  "keywords": [],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "tutor",
+   "graveyard"
+  ]
+ },
+ {
+  "name": "Pet Sehlat",
+  "set": "trk",
+  "type_line": "Creature — Bear",
+  "mana_cost": "{2}{W}",
+  "cmc": 3.0,
+  "oracle_text": "This creature can't attack alone.",
+  "keywords": [],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": "4",
+  "toughness": "3",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": []
+ },
+ {
+  "name": "Picard, Leading by Example",
+  "set": "trk",
+  "type_line": "Legendary Creature — Human Officer",
+  "mana_cost": "{1}{W}",
+  "cmc": 2.0,
+  "oracle_text": "{1}, {T}: Another target creature gets +X/+X until end of turn, where X is Picard's power. Activate only as a sorcery.",
+  "keywords": [],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": "2",
+  "toughness": "2",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "pump"
+  ]
+ },
+ {
+  "name": "Ensign Pavel Chekov",
+  "set": "trk",
+  "type_line": "Legendary Creature — Human Pilot",
+  "mana_cost": "{3}{U}",
+  "cmc": 4.0,
+  "oracle_text": "Strange new worlds — When Ensign Chekov enters, each opponent exiles the top X cards of their library, where X is the number of differently named lands you control. For each opponent, choose a land card that player owns exiled this way. You may play the chosen cards for as long as they remain exiled.",
+  "keywords": [
+   "Strange new worlds"
+  ],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": "1",
+  "toughness": "5",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "etb",
+   "draw"
+  ]
+ },
+ {
+  "name": "Guidance Failure",
+  "set": "trk",
+  "type_line": "Instant",
+  "mana_cost": "{3}{U}",
+  "cmc": 4.0,
+  "oracle_text": "This spell costs {1} less to cast if it targets an attacking creature.\nTarget creature or Spacecraft's owner puts it on their choice of the top or bottom of their library.",
+  "keywords": [],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "removal"
+  ]
+ },
+ {
+  "name": "Khaaaaaaaaaaaannn!",
+  "set": "trk",
+  "type_line": "Instant",
+  "mana_cost": "{X}{R}",
+  "cmc": 1.0,
+  "oracle_text": "Khaaaaaaaaaaaannn! deals twice X damage to target creature. If that creature would die this turn, exile it instead.",
+  "keywords": [],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "removal"
+  ]
+ },
+ {
+  "name": "Reckless Impulse",
+  "set": "trk",
+  "type_line": "Sorcery",
+  "mana_cost": "{1}{R}",
+  "cmc": 2.0,
+  "oracle_text": "Exile the top two cards of your library. Until the end of your next turn, you may play those cards.",
+  "keywords": [],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "draw"
+  ]
+ },
+ {
+  "name": "Savvy Profiteer",
+  "set": "trk",
+  "type_line": "Creature — Ferengi Rogue",
+  "mana_cost": "{1}{R}",
+  "cmc": 2.0,
+  "oracle_text": "{T}: Add {R}.\n{3}, {T}: Create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+  "keywords": [
+   "Treasure"
+  ],
+  "col": "R",
+  "ci": "R",
+  "produced": [
+   "B",
+   "G",
+   "R",
+   "U",
+   "W"
+  ],
+  "power": "2",
+  "toughness": "1",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "mana_creature",
+   "ramp"
+  ]
+ },
+ {
+  "name": "Andoria",
+  "set": "trk",
+  "type_line": "Land — Planet",
+  "mana_cost": "",
+  "cmc": 0.0,
+  "oracle_text": "This land enters tapped.\nWhen this land enters, you gain 1 life.\n{T}: Add {U} or {R}.",
+  "keywords": [],
+  "col": "",
+  "ci": "RU",
+  "produced": [
+   "R",
+   "U"
+  ],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "fixing",
+   "lifegain",
+   "etb"
+  ]
+ },
+ {
+  "name": "The Measure of a Man",
+  "set": "trk",
+  "type_line": "Enchantment — Saga",
+  "mana_cost": "{2}{W}",
+  "cmc": 3.0,
+  "oracle_text": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\nI — Exile up to one target nontoken artifact or creature.\nII — Investigate. (Create a Clue token. It's an artifact with \"{2}, Sacrifice this token: Draw a card.\")\nIII — Return the exiled card to the battlefield under its owner's control. You gain 2 life.",
+  "keywords": [
+   "Investigate"
+  ],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "saga",
+  "rar": "uncommon",
+  "esperado": [
+   "saga",
+   "removal",
+   "draw",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Oberth-Class Starship",
+  "set": "trk",
+  "type_line": "Artifact — Spacecraft",
+  "mana_cost": "{1}{W}",
+  "cmc": 2.0,
+  "oracle_text": "When this Spacecraft enters, search your library for a basic Plains card, reveal it, put it into your hand, then shuffle.\nStation (Tap another creature you control: Put charge counters equal to its power on this Spacecraft. Station only as a sorcery. It's an artifact creature at 6+.)\n6+ | Flying",
+  "keywords": [
+   "Station"
+  ],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": "2",
+  "toughness": "2",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "vehicle",
+   "ramp",
+   "etb",
+   "evasion"
+  ]
+ },
+ {
+  "name": "Consider the Prime Directive",
+  "set": "trk",
+  "type_line": "Instant",
+  "mana_cost": "{2}{U}",
+  "cmc": 3.0,
+  "oracle_text": "Choose one —\n• Interfere — Counter target spell unless its controller pays {3}.\n• Observe — Tap up to one target creature and put a stun counter on it. Draw a card. (If a permanent with a stun counter would become untapped, remove one from it instead.)",
+  "keywords": [
+   "Observe",
+   "Interfere"
+  ],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "counterspell",
+   "tap_freeze",
+   "draw"
+  ]
+ },
+ {
+  "name": "Emergency Medical Hologram",
+  "set": "trk",
+  "type_line": "Artifact Creature — Illusion Doctor",
+  "mana_cost": "{W}",
+  "cmc": 1.0,
+  "oracle_text": "When this creature enters, put a +1/+1 counter on target creature. You gain 1 life.",
+  "keywords": [],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": "0",
+  "toughness": "1",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "etb",
+   "counters",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Bat'leth",
+  "set": "trk",
+  "type_line": "Artifact — Equipment",
+  "mana_cost": "{2}{B}",
+  "cmc": 3.0,
+  "oracle_text": "When this Equipment enters, target creature an opponent controls gets -2/-2 until end of turn.\nEquipped creature gets +2/+0.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+  "keywords": [
+   "Equip"
+  ],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "equipment",
+   "etb",
+   "removal"
+  ]
+ },
+ {
+  "name": "Captain Jonathan Archer",
+  "set": "trk",
+  "type_line": "Legendary Creature — Human Officer",
+  "mana_cost": "{2}{G}",
+  "cmc": 3.0,
+  "oracle_text": "When Captain Archer enters, create Porthos, a legendary 1/1 green Dog creature token.\nFederation — {G}, {T}: Target creature you control gets +X/+X until end of turn, where X is the number of creature types among non-Borg creatures you control. Activate only as a sorcery.",
+  "keywords": [],
+  "col": "G",
+  "ci": "G",
+  "produced": [],
+  "power": "3",
+  "toughness": "3",
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "tokens",
+   "etb",
+   "pump"
+  ]
+ },
+ {
+  "name": "Kindred Judgment",
+  "set": "fra",
+  "type_line": "Sorcery",
+  "mana_cost": "{5}{W}{W}",
+  "cmc": 7.0,
+  "oracle_text": "Choose a creature type. Destroy all creatures that aren't of the chosen type.",
+  "keywords": [],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "sweeper"
+  ]
+ },
+ {
+  "name": "Rise of the Deathbringer",
+  "set": "fra",
+  "type_line": "Instant",
+  "mana_cost": "{4}{B}",
+  "cmc": 5.0,
+  "oracle_text": "Choose one —\n• Draw cards equal to the greatest power among creatures you control. You lose life equal to the number of cards drawn this way.\n• All creatures get -3/-3 until end of turn.",
+  "keywords": [],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "sweeper",
+   "draw"
+  ]
+ },
+ {
+  "name": "Fulminous Forte",
+  "set": "fra",
+  "type_line": "Instant",
+  "mana_cost": "{2}{R}",
+  "cmc": 3.0,
+  "oracle_text": "Choose one —\n• Fulminous Forte deals 1 damage to each creature and planeswalker your opponents control.\n• Fulminous Forte deals 5 damage to target creature or planeswalker.",
+  "keywords": [],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "sweeper",
+   "removal"
+  ]
+ },
+ {
+  "name": "Ajani Unrelenting",
+  "set": "fra",
+  "type_line": "Legendary Planeswalker — Ajani",
+  "mana_cost": "{4}{R}{R}",
+  "cmc": 6.0,
+  "oracle_text": "Whenever you activate a loyalty ability, create a 2/2 colorless Wizard Soldier creature token named Cadet.\n+1: Creatures you control get +1/+0 and gain haste until end of turn.\n−2: Discard your hand, then draw a card for each creature you control.\n−3: Ajani deals 4 damage to each creature except for tokens you control.",
+  "keywords": [],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "mythic",
+  "esperado": [
+   "planeswalker",
+   "tokens",
+   "pump",
+   "sweeper",
+   "draw",
+   "aggro"
+  ]
+ },
+ {
+  "name": "Woodwork Prodigy // Soul Tether",
+  "set": "fra",
+  "type_line": "Creature — Cat Druid // Sorcery",
+  "mana_cost": "{2}{R/G} // {2}{R/G}",
+  "cmc": 3.0,
+  "oracle_text": "At the beginning of your upkeep, if this creature isn't prepared, it becomes prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n//\nCreate a Heartwood token. (It's a red and green artifact with \"{T}: Add {R} or {G}.\")",
+  "keywords": [
+   "Prepared"
+  ],
+  "col": "GR",
+  "ci": "GR",
+  "produced": [
+   "G",
+   "R"
+  ],
+  "power": "3",
+  "toughness": "3",
+  "layout": "prepare",
+  "rar": "uncommon",
+  "esperado": [
+   "ramp",
+   "tokens"
+  ]
+ },
+ {
+  "name": "Vraska, the Cutting Glare",
+  "set": "fra",
+  "type_line": "Legendary Creature — Gorgon Assassin",
+  "mana_cost": "{B}{B}{G}",
+  "cmc": 3.0,
+  "oracle_text": "Deathtouch\nWhen Vraska enters, if you control six or more lands, destroy target permanent an opponent controls. They create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+  "keywords": [
+   "Treasure",
+   "Deathtouch"
+  ],
+  "col": "BG",
+  "ci": "BG",
+  "produced": [
+   "B",
+   "G",
+   "R",
+   "U",
+   "W"
+  ],
+  "power": "4",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "removal",
+   "etb"
+  ]
+ },
+ {
+  "name": "Fblthp, Knows the Way",
+  "set": "fra",
+  "type_line": "Legendary Creature — Homunculus Scout",
+  "mana_cost": "{X}{G}{G}",
+  "cmc": 2.0,
+  "oracle_text": "Domain — Fblthp's power is equal to the number of basic land types among lands you control.\nWhen Fblthp enters, search your library for up to X basic land cards with different names, reveal them, put them into your hand, then shuffle.",
+  "keywords": [
+   "Domain"
+  ],
+  "col": "G",
+  "ci": "G",
+  "produced": [],
+  "power": "*",
+  "toughness": "2",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "ramp",
+   "etb"
+  ]
+ },
+ {
+  "name": "Konstrari Charm",
+  "set": "fra",
+  "type_line": "Instant",
+  "mana_cost": "{R}{G}",
+  "cmc": 2.0,
+  "oracle_text": "Choose one —\n• Konstrari Charm deals 6 damage to target creature with flying.\n• Put two +1/+1 counters on target creature. It gains trample until end of turn.\n• Add {C}{C}{C}.",
+  "keywords": [],
+  "col": "GR",
+  "ci": "GR",
+  "produced": [
+   "C"
+  ],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "removal",
+   "counters",
+   "evasion",
+   "ramp"
+  ]
+ },
+ {
+  "name": "Multiply by Zero",
+  "set": "fra",
+  "type_line": "Instant",
+  "mana_cost": "{1}{B}",
+  "cmc": 2.0,
+  "oracle_text": "Target creature has base power and toughness 0/0 until end of turn.",
+  "keywords": [],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "removal"
+  ]
+ },
+ {
+  "name": "Living Library",
+  "set": "fra",
+  "type_line": "Artifact Creature — Book Illusion",
+  "mana_cost": "{2}",
+  "cmc": 2.0,
+  "oracle_text": "{6}, Sacrifice this creature: Choose target creature or planeswalker an opponent controls. Its owner shuffles it into their library.",
+  "keywords": [],
+  "col": "",
+  "ci": "",
+  "produced": [],
+  "power": "0",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "removal"
+  ]
+ },
+ {
+  "name": "Greenhouse Propagator",
+  "set": "fra",
+  "type_line": "Creature — Cat Druid",
+  "mana_cost": "{2}{G}",
+  "cmc": 3.0,
+  "oracle_text": "Whenever another creature you control enters, you gain 1 life.\n{T}: Add {G}.",
+  "keywords": [],
+  "col": "G",
+  "ci": "G",
+  "produced": [
+   "G"
+  ],
+  "power": "2",
+  "toughness": "3",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "mana_creature",
+   "ramp",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Dedicated Commons",
+  "set": "fra",
+  "type_line": "Land",
+  "mana_cost": "",
+  "cmc": 0.0,
+  "oracle_text": "This land enters tapped unless you control a planeswalker.\n{T}: Add {R} or {W}.",
+  "keywords": [],
+  "col": "",
+  "ci": "RW",
+  "produced": [
+   "R",
+   "W"
+  ],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "fixing"
+  ]
+ },
+ {
+  "name": "Blossom-Blessed Angel // Seed Suture",
+  "set": "fra",
+  "type_line": "Creature — Angel Cleric // Sorcery",
+  "mana_cost": "{3}{W} // {G/W}",
+  "cmc": 4.0,
+  "oracle_text": "Flying, vigilance\nThis creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n//\nPut a +1/+1 counter on target creature. You gain 1 life.",
+  "keywords": [
+   "Flying",
+   "Vigilance",
+   "Prepared"
+  ],
+  "col": "W",
+  "ci": "GW",
+  "produced": [],
+  "power": "2",
+  "toughness": "4",
+  "layout": "prepare",
+  "rar": "common",
+  "esperado": [
+   "evasion",
+   "counters",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Countersculpt",
+  "set": "fra",
+  "type_line": "Instant",
+  "mana_cost": "{U}{U}",
+  "cmc": 2.0,
+  "oracle_text": "As an additional cost to cast this spell, behold a Jace or pay {1}. (To behold a Jace, choose a Jace you control or reveal a Jace card from your hand.)\nCounter target spell. Empower Jace 1. (Put a loyalty counter on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")",
+  "keywords": [
+   "Surveil",
+   "Empower Jace",
+   "Behold"
+  ],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "counterspell"
+  ]
+ }
+]

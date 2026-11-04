@@ -1,0 +1,248 @@
+{
+ "regras": [
+  {
+   "tag": "removal",
+   "rotulo": "Remoção",
+   "regex": "(?:destroy|exile) (?:up to \\w+ )?target (?:[\\w-]+ ){0,4}(?:creature|permanent|planeswalker|nonland|artifact)|deals? (?:\\d+|x|twice x) damage to (?:target|any target|up to)|deals? damage equal to [^.]{0,40} to (?:target|up to) (?:\\w+ ){0,2}(?:creature|planeswalker|permanent|any target)|target (?:[\\w' ,-]+? )?(?:gets?|get) -(?:\\d+|x)/-(?:\\d+|x)|\\bfights?\\b|sacrifices? (?:a|an|target) creature|(?:its|'s) owner (?:puts|shuffles) (?:it|that \\w+) (?:on|into)[^.]{0,60}library|has base power and toughness 0/0"
+  },
+  {
+   "tag": "sweeper",
+   "rotulo": "Varredura",
+   "regex": "(?:destroy|exile) all (?:\\w+ ){0,3}(?:creatures|permanents|nonland)|deals? (?:\\d+|x) damage to each (?:creature|opponent and each creature)|each creature gets? -\\d+/-\\d+|all creatures get -"
+  },
+  {
+   "tag": "counterspell",
+   "rotulo": "Contramágica",
+   "regex": "counter target"
+  },
+  {
+   "tag": "bounce",
+   "rotulo": "Devolver à mão",
+   "regex": "return (?:up to \\w+ )?target (?:\\w+ ){0,3}(?:creature|permanent|nonland permanent)s? (?:\\w+ ){0,3}to (?:its|their) owner'?s? hands?"
+  },
+  {
+   "tag": "tap_freeze",
+   "rotulo": "Virar/congelar",
+   "regex": "tap (?:up to \\w+ )?target (?:\\w+ ){0,2}creature|doesn'?t untap|don'?t untap|stun counter"
+  },
+  {
+   "tag": "draw",
+   "rotulo": "Comprar cartas",
+   "regex": "\\bdraws? (?:a|an|one|two|three|four|x|that many|half|cards?) ?cards?|\\bdraws? cards\\b|investigate|look at the top (?:\\w+ ){0,3}cards? .{0,60}into your hand|exiles? the top (?:\\w+ ){0,2}cards? of (?:your|their|each opponent's) library.{0,260}you may (?:play|cast)|you may (?:play|cast) the chosen cards"
+  },
+  {
+   "tag": "selection",
+   "rotulo": "Filtrar o grimório",
+   "regex": "\\bscry\\b|surveil|look at the top|explore"
+  },
+  {
+   "tag": "ramp",
+   "rotulo": "Mana extra",
+   "regex": "add \\{|add (?:one|two|three) mana|search your library for (?:a|up to \\w+) (?:basic )?(?:land|plains|island|swamp|mountain|forest)|land card (?:from your hand )?onto the battlefield|(?<!they )creates? (?:a|an|two|three|x|that many) (?:tapped )?treasure tokens?|landcycling|put (?:a|up to \\w+) lands? (?:cards? )?(?:from your hand )?onto the battlefield|heartwood token"
+  },
+  {
+   "tag": "tokens",
+   "rotulo": "Fichas",
+   "regex": "create (?:a|an|one|two|three|four|five|six|seven|eight|nine|ten|x|that many)\\b(?!.{0,15}(?:treasure|clue|food|blood|map)).{0,80}?tokens?|creates? [a-z' -]{2,30}, an? [^.]{0,80}\\btokens?\\b"
+  },
+  {
+   "tag": "counters",
+   "rotulo": "Contadores +1/+1",
+   "regex": "\\+1/\\+1 counter|proliferate"
+  },
+  {
+   "tag": "lifegain",
+   "rotulo": "Ganhar vida",
+   "regex": "\\bgain(?:s)? (?:\\d+|x|that much) life|lifelink|whenever you gain life"
+  },
+  {
+   "tag": "graveyard",
+   "rotulo": "Cemitério",
+   "regex": "from your graveyard|from a graveyard|flashback|\\bmill\\b|mills? \\w+ cards?|threshold|delirium|exile (?:\\w+ ){0,3}cards? from (?:your|a|each) graveyard|beam me up|cast (?:this card|it) from (?:your )?graveyard"
+  },
+  {
+   "tag": "reanimate",
+   "rotulo": "Reanimar",
+   "regex": "return (?:up to \\w+ )?target (?:[\\w-]+ ){0,3}(?:creature|permanent) cards?(?: [^.]{0,50})? from (?:your|a) graveyard to the battlefield|put target (?:\\w+ ){0,3}creature card from a graveyard onto the battlefield"
+  },
+  {
+   "tag": "sacrifice",
+   "rotulo": "Sacrifício",
+   "regex": "sacrifice (?:a|an|another|x|up to|two|three)"
+  },
+  {
+   "tag": "discard",
+   "rotulo": "Descarte",
+   "regex": "(?:target (?:player|opponent)|each opponent|each player) discards?"
+  },
+  {
+   "tag": "pump",
+   "rotulo": "Bônus de combate",
+   "regex": "gets? \\+[\\dx]+/\\+[\\dx]+(?: and gains? [\\w ,]+?)? until end of turn|get \\+[\\dx]+/\\+[\\dx]+(?: and gains? [\\w ,]+?)? until end of turn|\\+\\d+/\\+\\d+ and gains?"
+  },
+  {
+   "tag": "evasion",
+   "rotulo": "Evasão",
+   "regex": "(?<!with )\\bflying\\b|\\bmenace\\b|\\btrample\\b|can'?t be blocked|\\bshadow\\b|\\bfear\\b|\\bintimidate\\b|\\bskulk\\b"
+  },
+  {
+   "tag": "protection",
+   "rotulo": "Proteção",
+   "regex": "\\bhexproof\\b|\\bward\\b|(?<!with )\\bindestructible\\b|protection from|can'?t be countered"
+  },
+  {
+   "tag": "aggro",
+   "rotulo": "Agressão",
+   "regex": "(?<!with )\\bhaste\\b|\\bdouble strike\\b|\\bfirst strike\\b|\\bprowess\\b|attacks? each combat|whenever (?:this creature|~) attacks"
+  },
+  {
+   "tag": "landfall",
+   "rotulo": "Landfall",
+   "regex": "landfall|whenever a land (?:you control )?enters|whenever (?:one or more )?lands? enters"
+  },
+  {
+   "tag": "spells_matter",
+   "rotulo": "Mágicas importam",
+   "regex": "whenever you cast (?:an? )?(?:instant|sorcery|noncreature|spell)|magecraft|instant and sorcery|instant or sorcery"
+  },
+  {
+   "tag": "artifacts_matter",
+   "rotulo": "Artefatos importam",
+   "regex": "artifacts? you control|whenever an? artifact|(?<!non)artifact creatures?(?! tokens?)|for each artifact"
+  },
+  {
+   "tag": "enchantments_matter",
+   "rotulo": "Encantamentos importam",
+   "regex": "enchantments? you control|whenever an? enchantment|enchantment card"
+  },
+  {
+   "tag": "copy",
+   "rotulo": "Copiar",
+   "regex": "copy of|copy target|create a token that'?s a copy"
+  },
+  {
+   "tag": "tutor",
+   "rotulo": "Buscar carta",
+   "regex": "search your library for (?:a|an|up to \\w+) (?!(?:basic )?(?:lands?|plains|islands?|swamps?|mountains?|forests?)\\b)[\\w, ]{0,40}card"
+  },
+  {
+   "tag": "anthem",
+   "rotulo": "Bônus para o time",
+   "regex": "creatures you control get \\+\\d+/\\+\\d+(?![^.\\n]*until end of turn)|other (?:\\w+ )?creatures you control get \\+\\d+/\\+\\d+(?![^.\\n]*until end of turn)|creatures you control (?:have|gain)"
+  },
+  {
+   "tag": "etb",
+   "rotulo": "Efeito ao entrar",
+   "regex": "(?:^|\\n|\\. |— )when (?!a |an |another |one or more |you |an opponent|each |target |this turn)[^.,:;\\n]{1,40}? enters?\\b"
+  }
+ ],
+ "tipos": [
+  {
+   "tag": "equipment",
+   "rotulo": "Equipamento",
+   "regex_no_type_line": "equipment"
+  },
+  {
+   "tag": "aura",
+   "rotulo": "Aura",
+   "regex_no_type_line": "aura"
+  },
+  {
+   "tag": "vehicle",
+   "rotulo": "Veículo/nave",
+   "regex_no_type_line": "vehicle|spacecraft"
+  },
+  {
+   "tag": "saga",
+   "rotulo": "Saga",
+   "regex_no_type_line": "saga"
+  },
+  {
+   "tag": "planeswalker",
+   "rotulo": "Planeswalker",
+   "regex_no_type_line": "planeswalker"
+  }
+ ],
+ "evergreen_ignorar_como_mecanica": [
+  "basic landcycling",
+  "convoke",
+  "cycling",
+  "deathtouch",
+  "defender",
+  "double",
+  "double strike",
+  "enchant",
+  "equip",
+  "fight",
+  "first strike",
+  "flash",
+  "flashback",
+  "flying",
+  "food",
+  "haste",
+  "hexproof",
+  "indestructible",
+  "kicker",
+  "landcycling",
+  "lifelink",
+  "menace",
+  "prowess",
+  "reach",
+  "trample",
+  "transport",
+  "treasure",
+  "typecycling",
+  "vigilance",
+  "ward"
+ ],
+ "rotulos_extras": {
+  "mana_creature": "Criatura de mana",
+  "fixing": "Terreno de várias cores",
+  "finisher": "Finalizador"
+ },
+ "nota": "regex aplicado ao texto de regras em minúsculas, sem texto entre parênteses, com o nome da carta trocado por ~. Flags: nenhuma.",
+ "keywords_para_etiqueta": {
+  "evasion": [
+   "flying",
+   "menace",
+   "trample"
+  ],
+  "protection": [
+   "hexproof",
+   "ward",
+   "indestructible"
+  ],
+  "aggro": [
+   "haste",
+   "double strike",
+   "first strike",
+   "prowess"
+  ],
+  "lifegain": [
+   "lifelink"
+  ],
+  "draw": [
+   "investigate"
+  ],
+  "selection": [
+   "surveil",
+   "scry",
+   "explore"
+  ],
+  "landfall": [
+   "landfall"
+  ],
+  "ramp": [
+   "landcycling",
+   "basic landcycling"
+  ]
+ },
+ "limiares": {
+  "mecanica_min_cartas": 3,
+  "tribo_min_criaturas": 5,
+  "tribo_min_citam": 2,
+  "assinatura_min_multicoloridas": 4,
+  "finalizador_cmc": 6,
+  "finalizador_pt": 6
+ }
+}

@@ -7,8 +7,8 @@ const FONTS = 'fonts-v1';
 const MAX_IMGS = 4000;
 
 const ASSETS = [
-  './', 'index.html', 'manifest.webmanifest', 'css/app.css',
-  'js/app.js', 'js/store.js', 'js/scryfall.js', 'js/catalog.js', 'js/backup.js', 'js/lands.js', 'js/report.js',
+  './', 'index.html', 'manifest.webmanifest', 'css/app.css', 'css/arq.css',
+  'js/app.js', 'js/store.js', 'js/scryfall.js', 'js/catalog.js', 'js/backup.js', 'js/lands.js', 'js/report.js', 'js/archetypes.js', 'js/arqview.js', 'data/rules.json',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
 ];
 

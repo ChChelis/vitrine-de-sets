@@ -13,9 +13,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/arq.css">
 </head>
 <body>
 <div id="bgart"></div>
+<button class="btn" id="focusMenu" aria-label="Mostrar ou esconder o menu">☰ Menu</button>
 <div id="app">
   <header>
     <div class="tabs" id="tabs" role="tablist" aria-label="Edições"></div>
@@ -25,6 +27,7 @@
       <button id="vGrid" aria-pressed="false">Grade</button>
       <button id="vTri" aria-pressed="false">Triagem</button>
     </div>
+    <button class="btn" id="bArq">Arquétipos</button>
     <button class="btn" id="bRep">Pré-release</button>
     <button class="btn" id="bLands">Lands</button>
     <button class="btn" id="bEd">Edições</button>
@@ -36,6 +39,7 @@
     <div class="chips" id="chips" role="group" aria-label="Cor"></div>
     <select id="selVar" aria-label="Variantes"><option value="all">Todas as versões</option><option value="main">Só principais</option><option value="var">Só variantes</option></select>
     <select id="selRar" aria-label="Raridade"><option value="all">Toda raridade</option><option value="mythic">Mítica</option><option value="rare">Rara</option><option value="uncommon">Incomum</option><option value="common">Comum</option></select>
+    <select id="selTag" aria-label="Etiqueta"><option value="">Qualquer etiqueta</option></select>
     <div class="seg" id="modeSeg" role="group" aria-label="Adicionar como" title="Acabamento usado ao clicar na grade">
       <button data-m="n" aria-pressed="true">Normal</button><button data-m="f" aria-pressed="false">Foil</button>
     </div>
@@ -58,6 +62,11 @@
     <button class="btn" id="bClear">Limpar lista</button>
   </div>
 </aside>
+
+<section id="arq" class="page" role="dialog" aria-label="Arquétipos">
+  <header><h2>Arquétipos</h2><button class="btn" data-close="arq">Fechar</button></header>
+  <div class="page-body" id="arqBody"></div>
+</section>
 
 <section id="lands" class="page" role="dialog" aria-label="Lands por cor">
   <header><h2>Lands por cor</h2><button class="btn" data-close="lands">Fechar</button></header>

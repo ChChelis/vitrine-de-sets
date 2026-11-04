@@ -65,7 +65,8 @@ export function entry(c) {
   const back = c.image_uris ? null : (f[1] && f[1].image_uris && (f[1].image_uris.normal || f[1].image_uris.small));
   const join = k => c[k] != null ? c[k] : f.map(x => x[k]).filter(v => v != null && v !== '').join('\n//\n');
   return {
-    id: c.id, set: c.set, name: c.name, num: c.collector_number, rar: c.rarity, fin: c.finishes,
+    dv: 2, id: c.id, set: c.set, name: c.name, num: c.collector_number, rar: c.rarity, fin: c.finishes,
+    type_line: c.type_line || '', ci: (c.color_identity || []).join(''), produced: c.produced_mana || [],
     tags: [...new Set(tags)].sort(), col, type: (c.type_line || '').slice(0, 60), cmc: c.cmc || 0,
     layout: c.layout, released: c.released_at, lang: c.lang, ptbr: null,
     mana_cost: join('mana_cost'), oracle_text: join('oracle_text'), keywords: c.keywords || [],

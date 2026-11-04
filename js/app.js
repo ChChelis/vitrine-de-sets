@@ -3,6 +3,8 @@ import * as cat from './catalog.js';
 import * as bk from './backup.js';
 import * as lands from './lands.js';
 import * as report from './report.js';
+import * as arch from './archetypes.js';
+import * as arqview from './arqview.js';
 
 const $=s=>document.querySelector(s), esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let SETS=[];            // siglas visíveis (não arquivadas), na ordem das abas
@@ -12,7 +14,7 @@ const RAR={mythic:'Mítica',rare:'Rara',uncommon:'Incomum',common:'Comum',specia
 const RL={mythic:'M',rare:'R',uncommon:'U',common:'C'};
 const IGN=new Set(['legendary','enchantment','universesbeyond','boosterfun','snow','devoid','saga','vehicle','miracle','spree','mutate','nyxtouched','draft','companion','tombstone','etched','glossy','compasslanddfc','nyxborn']);
 const VLBL={borderless:'Borderless',showcase:'Showcase',extendedart:'Arte estendida',fullart:'Full art',inverted:'Invertida',japanshowcase:'Japão',headliner:'Headliner',surgefoil:'Surge foil',fracturefoil:'Fracture foil',facetfoil:'Facet foil',retro:'Retrô'};
-const S={set:'fra',data:{},view:'car',idx:0,q:'',cols:new Set(),vr:'all',rar:'all',mode:'n',list:{},votes:{},undo:[],tf:'p',ti:0,busy:false,qual:'NM',lang:'EN',flip:0};
+const S={set:'fra',data:{},view:'car',idx:0,q:'',cols:new Set(),vr:'all',rar:'all',mode:'n',list:{},votes:{},undo:[],tf:'p',ti:0,busy:false,tag:'',qual:'NM',lang:'EN',flip:0};
 const tags=c=>c.tags.filter(t=>!IGN.has(t));
 const isVar=c=>tags(c).length>0;
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
@@ -29,6 +31,36 @@ async function refreshRows(){
   ROWS=await cat.listSets(); SETS=ROWS.filter(r=>!r.archived).map(r=>r.code);
   for(const code in S.data){const r=ROWS.find(x=>x.code===code); if(r)Object.assign(S.data[code],r)}
 }
+/* ---------- etiquetas e arquétipos (por edição, calculados no aparelho) ---------- */
+const ARQ={}, upgrading=new Set(); let ARR=null;
+async function ensureAnalysis(code){
+  if(ARQ[code])return ARQ[code];
+  const d=S.data[code]; if(!d)return null;
+  if(d.cards.some(c=>c.ci===undefined)){      // cartas baixadas antes das etiquetas: falta identidade de cor e tipo completo
+    if(!upgrading.has(code)&&navigator.onLine!==false){
+      upgrading.add(code); toast('Atualizando '+code.toUpperCase()+' para ativar as etiquetas…');
+      try{await cat.syncSet(code); delete S.data[code]; await refreshRows(); await load(code)}catch(e){toast('Não consegui atualizar '+code.toUpperCase()+': '+e.message)}
+      finally{upgrading.delete(code)}
+    }
+    if(!S.data[code]||S.data[code].cards.some(c=>c.ci===undefined))return null;
+  }
+  ARR=ARR||await arch.loadRules();
+  ARQ[code]=arch.analyze(S.data[code].cards,ARR); return ARQ[code];
+}
+function fillTagSelect(){
+  const a=ARQ[S.set], sel=$('#selTag'); if(!a||!ARR){sel.innerHTML='<option value="">Qualquer etiqueta</option>';return}
+  const cnt={}; for(const n in a.etiquetas)for(const t of a.etiquetas[n])cnt[t]=(cnt[t]||0)+1;
+  const ts=Object.keys(cnt).sort((x,y)=>cnt[y]-cnt[x]);
+  sel.innerHTML='<option value="">Qualquer etiqueta</option>'+ts.map(t=>`<option value="${esc(t)}">${esc(arch.label(ARR,t))} (${cnt[t]})</option>`).join('');
+  sel.value=ts.includes(S.tag)?S.tag:''; if(sel.value!==S.tag)S.tag=sel.value;
+}
+const tagsOf=c=>{const a=ARQ[S.set];return a?a.etiquetas[c.name]||[]:[]};
+const tagChips=c=>ARR?tagsOf(c).map(t=>`<span class="tag">${esc(arch.label(ARR,t))}</span>`).join(''):'';
+function voteOfName(code){   // melhor voto entre as impressões do nome (Bomba > Sim > Meh > Não)
+  const d=S.data[code], best={}; if(!d)return()=>undefined;
+  for(const c of d.cards){const v=S.votes[code+'|'+c.id]; if(!v||v==='x')continue; const cur=best[c.name]; if(!cur||'symn'.indexOf(v)<'symn'.indexOf(cur))best[c.name]=v}
+  return n=>best[n];
+}
 function filtered(){
   const d=S.data[S.set]; if(!d)return [];
   const q=S.q.trim().toLowerCase();
@@ -38,6 +70,7 @@ function filtered(){
     if(S.vr==='main'&&isVar(c))return false;
     if(S.vr==='var'&&!isVar(c))return false;
     if(S.rar!=='all'&&c.rar!==S.rar)return false;
+    if(S.tag){const a=ARQ[S.set],t=a&&a.etiquetas[c.name]; if(!t||!t.includes(S.tag))return false}
     return true;
   });
 }
@@ -74,7 +107,7 @@ function renderChips(){
   $('#chips').innerHTML=['W','U','B','R','G','M','C'].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${S.cols.has(c)}" aria-label="Cor ${c}">${c}</button>`).join('');
 }
 function refreshCounts(){
-  $('#cnt').textContent=totalQty(); $('#cntV').textContent=Object.keys(S.votes).length;
+  $('#cnt').textContent=totalQty(); $('#cntV').textContent=realVotes();
   document.querySelectorAll('[data-card]').forEach(updateCardUI);
   if($('#drawer').classList.contains('open'))renderDrawer();
   if(S.view==='car')renderInfo();
@@ -148,8 +181,15 @@ function renderInfo(){
    <h1>${esc(c.name)}</h1><div class="type">${esc(c.type)}</div>
    <div class="tags"><span class="tag">#${esc(c.num)}</span><span class="tag r-${c.rar}">${RAR[c.rar]||c.rar}</span>${tags(c).map(t=>`<span class="tag">${esc(VLBL[t]||t)}</span>`).join('')}</div>
    <div class="rows">${row('n','Normal',hasN)}${row('f','Foil',hasF)}</div>
+   ${simHtml(c)}
    <div class="nav"><button class="btn" data-g="-1">↑ Anterior</button><button class="btn" data-g="1">Próxima ↓</button><button class="btn" id="bFlip">Virar</button><button class="btn" id="bToGrid">Ver grade</button></div>
    <div class="keys"><kbd>↑</kbd> <kbd>↓</kbd> navegar · <kbd>Enter</kbd> +1 · <kbd>Backspace</kbd> −1 · <kbd>F</kbd> foil · <kbd>Espaço</kbd> virar · <kbd>G</kbd> grade · <kbd>L</kbd> lista</div>`;
+}
+function simHtml(c){
+  const a=ARQ[S.set]; if(!a||!ARR)return '';
+  const tg=a.etiquetas[c.name]||[], sims=a.parecidas[c.name]||[];
+  return `<div class="simil">${tg.length?`<div class="chips-tag">${tg.map(t=>`<button class="chip-tag ${S.tag===t?'on':''}" data-tag="${esc(t)}">${esc(arch.label(ARR,t))}</button>`).join('')}</div>`:''}
+    ${sims.length?`<h4>Cartas parecidas</h4>${sims.map(x=>`<button class="sim" data-sim="${esc(x.nome)}">${esc(x.nome)}<span class="why">em comum: ${esc(x.comuns.map(t=>arch.label(ARR,t)).join(', '))}</span></button>`).join('')}`:''}</div>`;
 }
 function setBg(){const c=curCard(); $('#bgart').style.backgroundImage=c?`url(${c.img})`:''}
 
@@ -192,18 +232,25 @@ function updateCardUI(el){
 
 /* ---------- render geral ---------- */
 function renderStage(keepIdx){
+  document.body.classList.toggle('focus',S.view==='tri'); if(S.view!=='tri')document.body.classList.remove('menu');
   F=filtered(); if(!keepIdx){S.idx=0;S.ti=0}
   $('#resCount').textContent=F.length+' de '+(S.data[S.set]?S.data[S.set].cards.length:0)+' cartas';
   $('#vCar').setAttribute('aria-pressed',S.view==='car');$('#vGrid').setAttribute('aria-pressed',S.view==='grid');$('#vTri').setAttribute('aria-pressed',S.view==='tri');
   if(S.view==='car')mountCarousel(); else if(S.view==='tri')mountTri(); else mountGrid();
 }
-function setView(v){S.view=v;store.set('vitrine-view',v);renderStage(true)}
+function setView(v){
+  S.view=v;store.set('vitrine-view',v);
+  if(v==='tri')mainOnly();   // triagem sempre abre só nas versões principais
+  renderStage(true)
+}
+function mainOnly(){S.vr='main';$('#selVar').value='main'}
 async function setSet(code){
   if(!code){renderTabs();renderBoot();return}
   S.set=code; store.set('vitrine-set',code); renderTabs();
   $('#main').innerHTML='<div class="loading"><div class="spin"></div>Carregando '+code.toUpperCase()+'…</div>';
   try{await load(code)}catch(e){$('#main').innerHTML='<div class="empty">Não consegui carregar '+code.toUpperCase()+'.</div>';return}
   renderTabs(); S.idx=0; S.ti=0; renderStage();
+  ensureAnalysis(code).then(a=>{if(a&&S.set===code){fillTagSelect();renderStage(true)}});
 }
 
 /* ---------- gaveta ---------- */
@@ -254,18 +301,21 @@ async function copyCsv(csv){
 }
 
 /* ---------- votos / triagem ---------- */
-const VK={s:'Bomba',y:'Sim',m:'Meh',n:'Não'}, VC={s:[.36,.55,1],y:[.18,.72,.4],m:[.95,.65,.1],n:[.86,.22,.22]}, VCSS={s:'#5b8cff',y:'#2db865',m:'#f2a61a',n:'#db3838'}, VP={s:'BOMBA',y:'SIM',m:'MEH',n:'NÃO'};
+const VK={s:'Bomba',y:'Sim',m:'Meh',n:'Não',x:'Ignorada'}, VC={s:[.36,.55,1],y:[.18,.72,.4],m:[.95,.65,.1],n:[.86,.22,.22]}, VCSS={s:'#5b8cff',y:'#2db865',m:'#f2a61a',n:'#db3838'}, VP={s:'BOMBA',y:'SIM',m:'MEH',n:'NÃO'};
 const vkey=(s,id)=>s+'|'+id;
 const szP=o=>Object.keys(o.list||{}).length+Object.keys(o.votes||{}).length;
-function voteCounts(set){const r={s:0,y:0,m:0,n:0};for(const k in S.votes){if(!set||k.startsWith(set+'|'))r[S.votes[k]]++}return r}
+const isBasic=c=>/Basic Land/.test(c.type);
+const realVotes=()=>Object.values(S.votes).filter(v=>v!=='x').length;
+const eligible=d=>d.cards.filter(c=>!isBasic(c)).length;
+function voteCounts(set){const r={s:0,y:0,m:0,n:0,x:0};for(const k in S.votes){if(!set||k.startsWith(set+'|'))r[S.votes[k]]++}return r}
 let TQ=[],drag=null;
-function triQ(){return F.filter(c=>{const v=S.votes[vkey(S.set,c.id)];return S.tf==='all'||(S.tf==='p'?!v:v===S.tf)})}
+function triQ(){return F.filter(c=>{if(isBasic(c)&&S.tf!=='x')return false;const v=S.votes[vkey(S.set,c.id)];return S.tf==='all'||(S.tf==='p'?!v:v===S.tf)})}
 function mountTri(){
-  $('#main').innerHTML=`<div class="tri"><div class="tri-top"><select id="triF" aria-label="Fila"><option value="p">Não votadas</option><option value="all">Todas</option><option value="y">Só Sim</option><option value="s">Só Bomba</option><option value="m">Só Meh</option><option value="n">Só Não</option></select><span class="meta" id="triMeta"></span></div>
+  $('#main').innerHTML=`<div class="tri"><div class="tri-top"><select id="triF" aria-label="Fila"><option value="p">Não votadas</option><option value="all">Todas</option><option value="y">Só Sim</option><option value="s">Só Bomba</option><option value="m">Só Meh</option><option value="n">Só Não</option><option value="x">Só ignoradas</option></select><span class="meta" id="triMeta"></span></div>
   <div class="tri-stage" id="triStage"></div><div class="tri-info" id="triInfo"></div>
   <div class="tri-bar"><button class="tb no" data-v="n" aria-label="Não (seta esquerda)">✕<small>Não</small></button><button class="tb meh" data-v="m" aria-label="Meh (seta para baixo)">~<small>Meh</small></button><button class="tb sup" data-v="s" aria-label="Bomba (seta para cima)">★<small>Bomba</small></button><button class="tb yes" data-v="y" aria-label="Sim (seta direita)">♥<small>Sim</small></button></div>
-  <div class="tri-bar2"><button class="btn" id="triUndo">↶ Desfazer</button><button class="btn" id="triVotes">Votos e impressão</button></div>
-  <div class="keys"><kbd>←</kbd> não · <kbd>→</kbd> sim · <kbd>↑</kbd> ou <kbd>B</kbd> bomba · <kbd>↓</kbd> ou <kbd>M</kbd> meh · <kbd>Z</kbd> desfazer · arraste a carta: esquerda = não, direita = sim, cima = bomba, baixo = meh · botão direito do mouse = meh</div></div>`;
+  <div class="tri-bar2"><button class="btn" id="triUndo">↶ Desfazer</button><button class="btn" data-v="x" title="Tirar da votação sem dar nota (tecla X)">⊘ Pular sem votar</button><button class="btn" id="triVotes">Votos e impressão</button></div>
+  <div class="keys"><kbd>←</kbd> não · <kbd>→</kbd> sim · <kbd>↑</kbd> ou <kbd>B</kbd> bomba · <kbd>↓</kbd> ou <kbd>M</kbd> meh · <kbd>X</kbd> pular sem votar · <kbd>Z</kbd> desfazer · arraste a carta: esquerda = não, direita = sim, cima = bomba, baixo = meh · botão direito do mouse = meh</div></div>`;
   $('#triF').value=S.tf; $('#triF').onchange=e=>{S.tf=e.target.value;S.ti=0;renderTri()};
   bindTri(); renderTri();
 }
@@ -273,15 +323,15 @@ function triCardHtml(c,d){return `<div class="tc" data-d="${d}" data-id="${c.id}
 function renderTri(){
   const st=$('#triStage'); if(!st)return;
   TQ=triQ(); if(S.ti>=TQ.length)S.ti=Math.max(0,TQ.length-1);
-  const cs=TQ.slice(S.ti,S.ti+3), cnt=voteCounts(S.set), tot=S.data[S.set].cards.length;
-  $('#triMeta').textContent=`Bomba ${cnt.s} · Sim ${cnt.y} · Meh ${cnt.m} · Não ${cnt.n} · sem voto ${Math.max(0,tot-cnt.s-cnt.y-cnt.m-cnt.n)}`;
+  const cs=TQ.slice(S.ti,S.ti+3), cnt=voteCounts(S.set), tot=eligible(S.data[S.set]);
+  $('#triMeta').textContent=`Bomba ${cnt.s} · Sim ${cnt.y} · Meh ${cnt.m} · Não ${cnt.n} · sem voto ${Math.max(0,tot-cnt.s-cnt.y-cnt.m-cnt.n-cnt.x)}${cnt.x?` · ignoradas ${cnt.x}`:''}`;
   const bar=document.querySelector('.tri-bar');
   if(!cs.length){st.innerHTML='';st.style.display='none';bar.style.visibility='hidden';
     $('#triInfo').innerHTML=`<div class="empty" style="padding:20px">${S.tf==='p'?'Todas as cartas desta seleção já foram votadas.':'Nenhuma carta nesta fila.'}<br><button class="btn pri" style="margin-top:12px" id="triVotes2">Votos e impressão</button></div>`;return}
   st.style.display='';bar.style.visibility='';
   st.innerHTML=cs.map((c,i)=>triCardHtml(c,i)).reverse().join('');
   const c=cs[0], v=S.votes[vkey(S.set,c.id)], tg=tags(c);
-  $('#triInfo').innerHTML=`<div class="tn">${esc(c.name)}</div><div class="meta">#${esc(c.num)} · ${RAR[c.rar]||c.rar}${tg.length?' · '+esc(tg.map(t=>VLBL[t]||t).join(', ')):''}${v?' · voto atual: '+VK[v]:''}</div>`;
+  $('#triInfo').innerHTML=`<div class="tn">${esc(c.name)}</div><div class="meta">#${esc(c.num)} · ${RAR[c.rar]||c.rar}${tg.length?' · '+esc(tg.map(t=>VLBL[t]||t).join(', ')):''}${v?' · voto atual: '+VK[v]:''}</div><div class="tri-tags">${tagChips(c)}</div>`;
   $('#bgart').style.backgroundImage=`url(${c.img})`;
 }
 function bindTri(){
@@ -309,9 +359,9 @@ function bindTri(){
 function flyOut(v){
   if(S.busy||S.view!=='tri')return; const c=TQ[S.ti]; if(!c)return;
   const el=document.querySelector('#triStage .tc[data-d="0"]'); if(!el)return; S.busy=true;
-  const W=innerWidth,H=innerHeight, dx=v==='y'?W:v==='n'?-W:0, dy=v==='s'?-H:v==='m'?H:0;
+  const W=innerWidth,H=innerHeight, dx=v==='y'?W:v==='n'?-W:0, dy=v==='s'?-H:v==='m'?H:0, ign=v==='x';
   const stamp=el.querySelector('.st.'+v); if(stamp)stamp.style.opacity=1;
-  el.style.transition='transform .28s ease-in,opacity .28s'; el.style.transform=`translate(${dx}px,${dy}px) rotate(${v==='y'?22:v==='n'?-22:0}deg)`; el.style.opacity=0;
+  el.style.transition='transform .28s ease-in,opacity .28s'; el.style.transform=ign?'scale(.85)':`translate(${dx}px,${dy}px) rotate(${v==='y'?22:v==='n'?-22:0}deg)`; el.style.opacity=0;
   setTimeout(()=>{S.busy=false;commitVote(c,v)},270);
 }
 function commitVote(c,v){
@@ -389,7 +439,7 @@ function renderPrev(){
 }
 async function vmRefresh(){
   await Promise.all(SETS.map(s=>load(s).catch(()=>null)));
-  $('#vmSum').innerHTML=SETS.map(s=>{const d=S.data[s]; if(!d)return ''; const c=voteCounts(s); return `<tr><td><b>${s.toUpperCase()}</b></td><td>Bomba ${c.s}</td><td>Sim ${c.y}</td><td>Meh ${c.m}</td><td>Não ${c.n}</td><td>sem voto ${Math.max(0,d.cards.length-c.s-c.y-c.m-c.n)}</td></tr>`}).join('');
+  $('#vmSum').innerHTML=SETS.map(s=>{const d=S.data[s]; if(!d)return ''; const c=voteCounts(s); return `<tr><td><b>${s.toUpperCase()}</b></td><td>Bomba ${c.s}</td><td>Sim ${c.y}</td><td>Meh ${c.m}</td><td>Não ${c.n}</td><td>sem voto ${Math.max(0,eligible(d)-c.s-c.y-c.m-c.n-c.x)}</td></tr>`}).join('');
   const ed=$('#vmEd'); if(!ed.options.length)ed.innerHTML='<option value="all">Todas</option>'+SETS.map(s=>`<option value="${s}">${s.toUpperCase()}</option>`).join('');
   VM.items=await voteItems(); $('#vmCount').textContent=VM.items.length+' cartas na seleção';
   $('#pp').value=VM.pp; $('#ppNames').checked=VM.names; $('#ppMark').checked=VM.mark; $('#ppHi').checked=VM.hi;
@@ -486,6 +536,7 @@ $('#tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b&&b
 $('#vCar').onclick=()=>setView('car'); $('#vGrid').onclick=()=>setView('grid'); $('#vTri').onclick=()=>setView('tri');
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;const c=b.dataset.c;S.cols.has(c)?S.cols.delete(c):S.cols.add(c);renderChips();renderStage()});
 let qt; $('#q').addEventListener('input',e=>{clearTimeout(qt);qt=setTimeout(()=>{S.q=e.target.value;renderStage()},180)});
+$('#selTag').onchange=e=>{S.tag=e.target.value;renderStage()};
 $('#selVar').onchange=e=>{S.vr=e.target.value;renderStage()}; $('#selRar').onchange=e=>{S.rar=e.target.value;renderStage()};
 $('#modeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setMode(b.dataset.m)});
 function setMode(m){S.mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m))}
@@ -494,6 +545,8 @@ function stepAct(e){const a=e.target.closest('[data-a]'); if(!a)return false; if
 $('#main').addEventListener('pointerup',e=>{if(e.pointerType!=='mouse')stepAct(e)});
 $('#main').addEventListener('click',e=>{
   if(stepAct(e))return;
+  const tg=e.target.closest('[data-tag]'); if(tg){S.tag=S.tag===tg.dataset.tag?'':tg.dataset.tag;$('#selTag').value=S.tag;renderStage();return}
+  const sm=e.target.closest('[data-sim]'); if(sm){jumpTo(sm.dataset.sim);return}
   const g=e.target.closest('[data-g]'); if(g){go(+g.dataset.g);return}
   const tv=e.target.closest('[data-v]'); if(tv){flyOut(tv.dataset.v);return}
   if(e.target.closest('#triUndo')){triUndo();return}
@@ -501,8 +554,13 @@ $('#main').addEventListener('click',e=>{
   if(e.target.closest('#bFlip')){flip();return}
   if(e.target.closest('#bToGrid')){setView('grid')}
 });
+function jumpTo(name){
+  let i=F.findIndex(c=>c.name===name);
+  if(i<0){S.q='';S.cols.clear();S.vr='all';S.rar='all';S.tag='';$('#q').value='';$('#selVar').value='all';$('#selRar').value='all';$('#selTag').value='';renderChips();F=filtered();i=F.findIndex(c=>c.name===name)}
+  if(i>=0){S.idx=i;S.flip=0;renderStage(true)}
+}
 function flip(){S.flip=S.flip?0:180;const c=curCard();const el=c&&reelEls.get(c.id);if(el)el.querySelector('.tilt').style.setProperty('--flip',S.flip+'deg')}
-$('#bList').onclick=()=>openDrawer(true); $('#dClose').onclick=$('#scrim').onclick=()=>openDrawer(false);
+$('#focusMenu').onclick=()=>document.body.classList.toggle('menu'); $('#bList').onclick=()=>openDrawer(true); $('#dClose').onclick=$('#scrim').onclick=()=>openDrawer(false);
 $('#dList').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;const [s,id,f]=b.dataset.k.split('|');const x=S.list[b.dataset.k];if(!x)return;const nq=x.q+(+b.dataset.d);if(nq<=0)delete S.list[b.dataset.k];else x.q=nq;save();refreshCounts()});
 $('#dQ').onchange=e=>{S.qual=e.target.value;save()}; $('#dL').onchange=e=>{S.lang=e.target.value;save()};
 $('#bExp').onclick=exportCsv; $('#bCopy').onclick=()=>copyCsv();
@@ -511,7 +569,7 @@ $('#bClear').onclick=async()=>{ if(!S.confirm){S.confirm=true;$('#bClear').textC
 document.addEventListener('keydown',e=>{
   if(e.target.matches('input,select,textarea')||e.metaKey||e.ctrlKey)return;
   const k=e.key.toLowerCase();
-  if(k==='escape'){openDrawer(false);openVm(false);openEd(false);openPage('lands',false);openPage('rep',false);return}
+  if(k==='escape'){openDrawer(false);openVm(false);openEd(false);openPage('lands',false);openPage('rep',false);openPage('arq',false);return}
   if($('#vm').classList.contains('open')||document.querySelector('.page.open'))return;
   if(k==='l'){openDrawer(!$('#drawer').classList.contains('open'));return}
   if(k==='g'){setView(S.view==='car'?'grid':'car');return}
@@ -520,6 +578,7 @@ document.addEventListener('keydown',e=>{
     else if(k==='arrowleft'||k==='a'){e.preventDefault();flyOut('n')}
     else if(k==='arrowup'||k==='w'||k==='b'){e.preventDefault();flyOut('s')}
     else if(k==='arrowdown'||k==='s'||k==='m'){e.preventDefault();flyOut('m')}
+    else if(k==='x'||k==='delete'){e.preventDefault();flyOut('x')}
     else if(k==='z'||k==='backspace'){e.preventDefault();triUndo()}
     return;
   }
@@ -612,6 +671,24 @@ $('#bkFile').onchange=async e=>{
   }catch(err){st.textContent='Erro: '+err.message}
 };
 
+/* ---------- tela Arquétipos ---------- */
+async function openArq(){
+  openPage('arq',true); const body=$('#arqBody');
+  if(!S.set||!S.data[S.set]){body.innerHTML='<div class="vm-box">Baixe uma edição primeiro.</div>';return}
+  body.innerHTML='<div class="vm-box"><div class="vm-info">Analisando '+esc(S.data[S.set].name)+'…</div></div>';
+  const a=await ensureAnalysis(S.set);
+  if(!a){body.innerHTML='<div class="vm-box"><h3>Sem dados suficientes</h3><div class="vm-info">As cartas desta edição foram baixadas numa versão antiga e é preciso atualizá-las (precisa de internet). Abra Edições e toque em Atualizar.</div></div>';return}
+  fillTagSelect();
+  const vn=voteOfName(S.set), scores={};
+  for(const x of a.arquetipos)scores[x.cores]=arch.pontuar(x,a.etiquetas,vn);
+  body.innerHTML=arqview.renderArq(a,ARR,scores,S.data[S.set].name+' ('+S.set.toUpperCase()+')',Object.keys(S.votes).some(k=>k.startsWith(S.set+'|')&&S.votes[k]!=='x'));
+}
+$('#bArq').onclick=openArq;
+$('#arqBody').addEventListener('click',e=>{
+  const b=e.target.closest('[data-tag]'); if(!b)return;
+  S.tag=b.dataset.tag; fillTagSelect(); $('#selTag').value=S.tag; openPage('arq',false); setView('grid');
+});
+
 /* ---------- lands por cor e pré-release vs votos ---------- */
 const openPage=(id,o)=>$('#'+id).classList.toggle('open',o);
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>openPage(b.dataset.close,false));
@@ -625,6 +702,7 @@ $('#bLands').onclick=()=>openLands();
 let REP=null;
 async function openRep(){
   await Promise.all(SETS.map(s=>load(s).catch(()=>null)));
+  await Promise.all(SETS.map(s=>ensureAnalysis(s).catch(()=>null)));
   $('#repSet').innerHTML=SETS.map(s=>`<option value="${s}">${esc(S.data[s]?S.data[s].name:s)} (${s.toUpperCase()})</option>`).join('');
   if(SETS.includes(S.set))$('#repSet').value=S.set;
   $('#repDemo').hidden=!location.hostname.match(/^(localhost|127\.0\.0\.1)$/);
@@ -641,7 +719,7 @@ function runReport(text){
     const rows=report.parseCsv(text); if(!rows.length)throw new Error('CSV vazio');
     const cardsBySet={}; SETS.forEach(s=>{if(S.data[s])cardsBySet[s]=S.data[s].cards});
     const res=report.analyze(rows,S.votes,cardsBySet), cards=S.data[code].cards;
-    const pr=report.pullReport(res,code,cards,S.votes), dk=report.deckOverview(res,code);
+    const pr=report.pullReport(res,code,cards,S.votes), dk=report.deckOverview(res,code,3,ARQ[code]&&ARR?{etiquetas:ARQ[code].etiquetas,label:t=>arch.label(ARR,t)}:null);
     REP={text,res,dk};
     const outside=Object.entries(res.fora).map(([k,n])=>`${k.toUpperCase()}: ${n}`).join(', ');
     st.innerHTML=`${rows.length} linhas lidas.${outside?` Fora das edições carregadas: ${esc(outside)}.`:''}${Object.keys(S.votes).length?'':' <span class="warn">Você ainda não votou nada neste aparelho.</span>'}`;
@@ -690,9 +768,9 @@ function watchSw(){
   let u=await db.kv.get('user');
   if(!u){try{u=JSON.parse(store.get('vitrine')||'null')}catch(e){} if(u)await db.kv.set('user',u)}
   if(u){S.list=u.list||{};S.votes=u.votes||{};S.qual=u.qual||'NM';S.lang=u.lang||'EN';$('#dQ').value=S.qual;$('#dL').value=S.lang}
-  const v=store.get('vitrine-view'); if(v==='grid'||v==='tri')S.view=v;
+  const v=store.get('vitrine-view'); if(v==='grid'||v==='tri')S.view=v; if(S.view==='tri')mainOnly();
   const st=store.get('vitrine-set'); S.set=SETS.includes(st)?st:(SETS[0]||null);
-  $('#cnt').textContent=totalQty(); $('#cntV').textContent=Object.keys(S.votes).length;
+  $('#cnt').textContent=totalQty(); $('#cntV').textContent=realVotes();
   await setSet(S.set);
   SETS.filter(s=>s!==S.set).forEach(s=>load(s).then(renderTabs).catch(()=>{}));
 })();

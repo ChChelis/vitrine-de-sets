@@ -31,7 +31,9 @@ export function analyze(csvRows, votes, cardsBySet) {
     for (const c of cardsBySet[code]) {
       byId.set(c.id, c); byNum.set(code + '|' + nz(c.num), c);
       const nk = code + '|' + c.name.toLowerCase(); if (!byName.has(nk)) byName.set(nk, c);
-      const v = votes[code + '|' + c.id]; totals[code][v || '-']++;
+      if (/Basic Land/.test(c.type)) continue;
+      let v = votes[code + '|' + c.id]; if (v === 'x') continue;   // ignorada: fora da conta
+      totals[code][v || '-']++;
       if (v) { const a = nameVotes.get(nk) || []; a.push(v); nameVotes.set(nk, a); }
     }
   }
@@ -50,7 +52,7 @@ export function analyze(csvRows, votes, cardsBySet) {
   const out = [];
   for (const p of pulled.values()) {
     const c = p.card, nk = c.set + '|' + c.name.toLowerCase();
-    let v = votes[c.set + '|' + c.id], alt = false;
+    let v = votes[c.set + '|' + c.id], alt = false; if (v === 'x') v = undefined;
     if (!v) { const a = nameVotes.get(nk) || []; for (const x of 'symn') if (a.includes(x)) { v = x; alt = true; break; } }
     out.push({ ...p, voto: v || '-', alt });
   }
@@ -73,6 +75,7 @@ export function pullReport(res, code, cards, votes) {
 }
 
 /* ---- overview de decks ---- */
+const GENERIC = new Set(['etb', 'pump', 'removal', 'sweeper', 'evasion', 'draw', 'finisher', 'mana_creature']);
 const COLORS = ['W', 'U', 'B', 'R', 'G'];
 export const PAIRS = COLORS.flatMap((a, i) => COLORS.slice(i + 1).map(b => a + b));
 const isLand = c => /\bLand\b/.test(c.type);
@@ -80,7 +83,8 @@ const REM = /destroy target|exile target|deals? \d+ damage to (?:any target|targ
 const EVA = /\b(flying|menace|trample|shadow|fear|intimidate|skulk)\b|can't be blocked/i;
 const DRAW = /\bdraws? (?:a|an|two|three|\d+) cards?|\bscry \d|investigate|create a clue/i;
 
-export function deckOverview(res, code, topN = 3) {
+// ctx (opcional): { etiquetas: {nome: [tags]}, label: tag => rótulo }. Com ele, função das cartas e temas vêm das etiquetas.
+export function deckOverview(res, code, topN = 3, ctx = null) {
   const mine = res.pulled.filter(p => p.card.set === code && !isLand(p.card));
   const fits = (c, pair) => !c.col || [...c.col].every(x => pair.includes(x));
   const decks = PAIRS.map(pair => {
@@ -96,10 +100,18 @@ export function deckOverview(res, code, topN = 3) {
     for (const p of pick) {
       const c = p.card, k = p.use;
       cur[Math.min(5, Math.max(1, Math.ceil(c.cmc)))] += k;
-      if (/Creature/.test(c.type)) { cre += k; for (const t of (c.type.split('—')[1] || '').trim().split(/\s+/).filter(Boolean)) types[t] = (types[t] || 0) + k; }
-      const tx = c.oracle_text || '';
-      if (REM.test(tx)) rem += k; if (EVA.test(tx) || (c.keywords || []).some(x => /flying|menace|trample/i.test(x))) eva += k; if (DRAW.test(tx)) drw += k;
-      for (const x of c.keywords || []) kw[x] = (kw[x] || 0) + k;
+      if (/Creature/.test(c.type)) { cre += k; if (!ctx) for (const t of (c.type.split('—')[1] || '').trim().split(/\s+/).filter(Boolean)) types[t] = (types[t] || 0) + k; }
+      const tg = ctx && ctx.etiquetas[c.name];
+      if (tg) {
+        if (tg.includes('removal') || tg.includes('sweeper')) rem += k;
+        if (tg.includes('evasion')) eva += k;
+        if (tg.includes('draw') || tg.includes('selection')) drw += k;
+        for (const t of tg) { if (t.startsWith('tribo:')) types[t.slice(6)] = (types[t.slice(6)] || 0) + k; else if (!GENERIC.has(t)) kw[ctx.label(t)] = (kw[ctx.label(t)] || 0) + k; }
+      } else {
+        const tx = c.oracle_text || '';
+        if (REM.test(tx)) rem += k; if (EVA.test(tx) || (c.keywords || []).some(x => /flying|menace|trample/i.test(x))) eva += k; if (DRAW.test(tx)) drw += k;
+        for (const x of c.keywords || []) kw[x] = (kw[x] || 0) + k;
+      }
       if (p.voto === '-') nv += k;
       const pp = pips(c.mana_cost); for (const x in pp) ipsAll[x] = (ipsAll[x] || 0) + pp[x] * k;
     }
@@ -133,10 +145,10 @@ export function renderDecks(o, code) {
   const decks = o.ranking.map((d, i) => `<div class="vm-box"><h3>${i + 1}. ${[...d.pair].join('/')} — ${d.score} pts</h3>
     <div class="vm-info">${d.copies} jogáveis (meta 22–24)${d.faltam ? ` · <span class="warn">faltam ${d.faltam} para 23</span>` : ''}${d.semVoto ? ` · ${d.semVoto} sem voto (peso 1)` : ''}</div>
     <table class="rp-t"><tr><th>Curva 1-2</th><th>3</th><th>4</th><th>5+</th><th>Criat.</th><th>Mág.</th></tr><tr><td>${d.curve['1-2']}</td><td>${d.curve[3]}</td><td>${d.curve[4]}</td><td>${d.curve['5+']}</td><td>${d.criaturas}</td><td>${d.magicas}</td></tr></table>
-    <div class="vm-info">Remoção ${d.remocao} · evasão ${d.evasao} · compra/scry ${d.compra}</div>
-    <div class="vm-info">Temas: ${esc(d.temas.join(', ') || '—')} · Tipos: ${esc(d.tipos.join(', ') || '—')}</div>
+    <div class="vm-info">Remoção ${d.remocao} · evasão ${d.evasao} · compra/filtro ${d.compra}</div>
+    <div class="vm-info">Temas: ${esc(d.temas.join(', ') || '—')} · Tribos/tipos: ${esc(d.tipos.join(', ') || '—')}</div>
     <details><summary>Lista dos ${d.n} não-terrenos</summary><ul class="rp-list">${d.pick.map(p => `<li>${p.use}× ${esc(p.card.name)} <span class="vm-info">${esc(p.card.mana_cost || '')} · ${VOTE_NAME[p.voto]}${p.alt ? '*' : ''}</span></li>`).join('')}</ul></details>
     <div class="vm-info">Pips: ${Object.entries(d.pips).map(([c, n]) => c + ' ' + n).join(' · ') || '—'}</div>
     <button class="btn" data-lands="${d.pair}">Calcular lands</button></div>`).join('');
-  return `<div class="vm-box"><h3>Overview de decks — ${esc(code.toUpperCase())}</h3><div class="vm-info">Peso: Bomba 3, Sim 2, Meh 1, Não 0, sem voto 1. Jogáveis por cor (só mono): ${mono}. Incolores entram em qualquer deck; multicoloridas puxam o par.</div></div>${decks || '<div class="vm-info">Sem cartas suficientes.</div>'}`;
+  return `<div class="vm-box"><h3>Overview de decks — ${esc(code.toUpperCase())}</h3><div class="vm-info">Peso: Bomba 3, Sim 2, Meh 1, Não 0, sem voto 1. Jogáveis por cor (só mono): ${mono}. Incolores entram em qualquer deck; multicoloridas puxam o par. A qualidade é a <b>sua</b> nota (votos), não um ranking externo; remoção, evasão, compra e temas vêm das etiquetas do texto das cartas.</div></div>${decks || '<div class="vm-info">Sem cartas suficientes.</div>'}`;
 }

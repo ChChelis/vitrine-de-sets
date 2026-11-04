@@ -1,0 +1,488 @@
+[
+ {
+  "name": "Ajani Resolute",
+  "set": "fra",
+  "type_line": "Legendary Planeswalker — Ajani",
+  "mana_cost": "{1}{W}",
+  "cmc": 2.0,
+  "oracle_text": "Whenever you gain life, put a loyalty counter on Ajani.\n0: You gain 1 life.\n−4: Create a 2/2 white Cat Soldier creature token named Ajani's Pridemate with \"Whenever you gain life, put a +1/+1 counter on this token.\"\n−10: You get an emblem with \"Creatures you control get +2/+2.\"",
+  "keywords": [],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "mythic",
+  "esperado": [
+   "planeswalker",
+   "lifegain",
+   "tokens",
+   "anthem",
+   "counters"
+  ]
+ },
+ {
+  "name": "Way of the Mentor",
+  "set": "fra",
+  "type_line": "Legendary Enchantment",
+  "mana_cost": "{2}{W}",
+  "cmc": 3.0,
+  "oracle_text": "When Way of the Mentor enters, empower Jace 5. (Put five loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with \"[−1]: Surveil 1\" and \"[−3]: Draw a card.\")\nWhenever you gain life, put a loyalty counter on each planeswalker you control.",
+  "keywords": [
+   "Surveil",
+   "Empower Jace"
+  ],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "etb",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Vigorbloom Annex",
+  "set": "fra",
+  "type_line": "Land",
+  "mana_cost": "",
+  "cmc": 0.0,
+  "oracle_text": "This land enters tapped unless you control a planeswalker.\n{T}: Add {G} or {W}.",
+  "keywords": [],
+  "col": "",
+  "ci": "GW",
+  "produced": [
+   "G",
+   "W"
+  ],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "fixing"
+  ]
+ },
+ {
+  "name": "Tomik, Izzet Sparkmage",
+  "set": "fra",
+  "type_line": "Legendary Creature — Human Wizard",
+  "mana_cost": "{1}{R}",
+  "cmc": 2.0,
+  "oracle_text": "Prowess (Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn.)\nIf a source you control would deal noncombat damage to an opponent or a permanent an opponent controls, it deals that much damage plus 1 instead.",
+  "keywords": [
+   "Prowess"
+  ],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": "1",
+  "toughness": "2",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "aggro"
+  ]
+ },
+ {
+  "name": "Syndicate Liquidators",
+  "set": "trk",
+  "type_line": "Creature — Orion Pirate",
+  "mana_cost": "{4}{G}",
+  "cmc": 5.0,
+  "oracle_text": "Trample\nLandfall — Whenever a land you control enters, put two +1/+1 counters on target creature you control.",
+  "keywords": [
+   "Trample",
+   "Landfall"
+  ],
+  "col": "G",
+  "ci": "G",
+  "produced": [],
+  "power": "4",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "evasion",
+   "landfall",
+   "counters"
+  ]
+ },
+ {
+  "name": "Rok-Tahk, Budding Scientist",
+  "set": "trk",
+  "type_line": "Legendary Creature — Brikar Scientist",
+  "mana_cost": "{4}{G}{G}",
+  "cmc": 6.0,
+  "oracle_text": "Creatures you control have \"{T}: Add {G}{G}.\"\nWhen Rok-Tahk enters, create Murf, a legendary 0/1 green Ooze Slug creature token with indestructible.",
+  "keywords": [],
+  "col": "G",
+  "ci": "G",
+  "produced": [
+   "G"
+  ],
+  "power": "5",
+  "toughness": "5",
+  "layout": "normal",
+  "rar": "mythic",
+  "esperado": [
+   "ramp",
+   "tokens",
+   "etb",
+   "finisher",
+   "anthem"
+  ]
+ },
+ {
+  "name": "Edgar, Moonlit Sovereign",
+  "set": "fra",
+  "type_line": "Legendary Creature — Werewolf Noble",
+  "mana_cost": "{3}{G}{G}",
+  "cmc": 5.0,
+  "oracle_text": "Flash\nAt the beginning of your end step, if you didn't cast a spell this turn, put two +1/+1 counters on Edgar.\n{4}{G}: Put a +1/+1 counter on each creature you control with a +1/+1 counter on it.",
+  "keywords": [
+   "Flash"
+  ],
+  "col": "G",
+  "ci": "G",
+  "produced": [],
+  "power": "4",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "counters"
+  ]
+ },
+ {
+  "name": "Ruric Thar, Biomagus",
+  "set": "fra",
+  "type_line": "Legendary Creature — Ogre Crab Wizard",
+  "mana_cost": "{4}{U}{U}",
+  "cmc": 6.0,
+  "oracle_text": "Flying\nProwess, prowess (Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn twice.)\nWhenever Ruric Thar becomes the target of a spell or ability an opponent controls, draw a card.",
+  "keywords": [
+   "Flying",
+   "Prowess"
+  ],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": "4",
+  "toughness": "6",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "evasion",
+   "aggro",
+   "draw",
+   "finisher"
+  ]
+ },
+ {
+  "name": "Saru, Unthreatened",
+  "set": "trk",
+  "type_line": "Legendary Creature — Kelpien Officer",
+  "mana_cost": "{2}{G}",
+  "cmc": 3.0,
+  "oracle_text": "Flash\nWhen Saru enters, another target creature you control gains hexproof until end of turn. (It can't be the target of spells or abilities your opponents control.)",
+  "keywords": [
+   "Flash"
+  ],
+  "col": "G",
+  "ci": "G",
+  "produced": [],
+  "power": "3",
+  "toughness": "2",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "etb",
+   "protection"
+  ]
+ },
+ {
+  "name": "Georgiou, Terran Emperor",
+  "set": "trk",
+  "type_line": "Legendary Creature — Human Rogue Noble",
+  "mana_cost": "{4}{B}{B}",
+  "cmc": 6.0,
+  "oracle_text": "You don't lose the game for having 0 or less life.\nAt the beginning of your end step, you lose 3 life and draw a card. Then if your life total is 0 or less, create ten 1/1 red Officer creature tokens.",
+  "keywords": [],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": "4",
+  "toughness": "6",
+  "layout": "normal",
+  "rar": "mythic",
+  "esperado": [
+   "draw",
+   "tokens",
+   "finisher"
+  ]
+ },
+ {
+  "name": "Shipwreck Marsh",
+  "set": "fra",
+  "type_line": "Land",
+  "mana_cost": "",
+  "cmc": 0.0,
+  "oracle_text": "This land enters tapped unless you control two or more other lands.\n{T}: Add {U} or {B}.",
+  "keywords": [],
+  "col": "",
+  "ci": "BU",
+  "produced": [
+   "B",
+   "U"
+  ],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "fixing"
+  ]
+ },
+ {
+  "name": "Perfected Theory",
+  "set": "fra",
+  "type_line": "Instant",
+  "mana_cost": "{U}",
+  "cmc": 1.0,
+  "oracle_text": "Choose one —\n• Target creature has base power and toughness 1/1 until end of turn.\n• Target creature has base power and toughness 4/5 until end of turn.",
+  "keywords": [],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": []
+ },
+ {
+  "name": "Plasma Cascade",
+  "set": "trk",
+  "type_line": "Instant",
+  "mana_cost": "{2}{R}",
+  "cmc": 3.0,
+  "oracle_text": "Plasma Cascade deals 3 damage to any target. You may discard a card. If you do, draw a card.",
+  "keywords": [],
+  "col": "R",
+  "ci": "R",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "removal",
+   "draw"
+  ]
+ },
+ {
+  "name": "Elim Garak, Simple Tailor",
+  "set": "trk",
+  "type_line": "Legendary Creature — Cardassian Rogue",
+  "mana_cost": "{2}{B}",
+  "cmc": 3.0,
+  "oracle_text": "Menace\nWhenever you face a dilemma, each opponent loses 2 life and you gain 2 life. (You face a dilemma as you choose one or more modes for a spell or ability.)",
+  "keywords": [
+   "Face a dilemma",
+   "Menace"
+  ],
+  "col": "B",
+  "ci": "B",
+  "produced": [],
+  "power": "3",
+  "toughness": "3",
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "evasion",
+   "lifegain"
+  ]
+ },
+ {
+  "name": "Cloistered Telepath",
+  "set": "trk",
+  "type_line": "Creature — Talosian Advisor",
+  "mana_cost": "{1}{U}",
+  "cmc": 2.0,
+  "oracle_text": "Flash\nWhen this creature enters, draw a card, then discard a card.",
+  "keywords": [
+   "Flash"
+  ],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": "2",
+  "toughness": "1",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "etb",
+   "draw"
+  ]
+ },
+ {
+  "name": "Fatehold Chronologist // Peer Review",
+  "set": "fra",
+  "type_line": "Creature — Bird Wizard // Sorcery",
+  "mana_cost": "{1}{W/U} // {2}{W/U}",
+  "cmc": 2.0,
+  "oracle_text": "Flying\nThis creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\n//\nCreate a 2/2 colorless Wizard Soldier creature token named Cadet. Surveil 1.",
+  "keywords": [
+   "Flying",
+   "Surveil",
+   "Prepared"
+  ],
+  "col": "UW",
+  "ci": "UW",
+  "produced": [],
+  "power": "1",
+  "toughness": "2",
+  "layout": "prepare",
+  "rar": "common",
+  "esperado": [
+   "evasion",
+   "tokens",
+   "selection"
+  ]
+ },
+ {
+  "name": "Adversary by Algorithm",
+  "set": "trk",
+  "type_line": "Sorcery",
+  "mana_cost": "{2}{G}",
+  "cmc": 3.0,
+  "oracle_text": "Create a 3/3 colorless Illusion artifact creature token.\nBeam me up {3}{G} (You may cast this card from your graveyard for {3}{G} if you also return a creature you control to its owner's hand. Then exile this spell.)",
+  "keywords": [],
+  "col": "G",
+  "ci": "G",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "tokens",
+   "graveyard"
+  ]
+ },
+ {
+  "name": "Federation Field Medic",
+  "set": "trk",
+  "type_line": "Creature — Human Doctor",
+  "mana_cost": "{3}{W}",
+  "cmc": 4.0,
+  "oracle_text": "Vigilance\nWhen this creature enters, choose one —\n• Put a +1/+1 counter on target creature. It gains vigilance until end of turn.\n• Draw a card if you control a permanent with a counter on it.",
+  "keywords": [
+   "Vigilance"
+  ],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": "3",
+  "toughness": "2",
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "etb",
+   "counters",
+   "draw"
+  ]
+ },
+ {
+  "name": "Saheeli, Jewel of Avishkar",
+  "set": "fra",
+  "type_line": "Legendary Creature — Human Artificer",
+  "mana_cost": "{2}{U}{R}",
+  "cmc": 4.0,
+  "oracle_text": "Thopters you control have haste.\nWhenever you cast a noncreature spell, create a 1/1 colorless Thopter artifact creature token with flying.",
+  "keywords": [],
+  "col": "RU",
+  "ci": "RU",
+  "produced": [],
+  "power": "2",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "tokens",
+   "spells_matter",
+   "aggro"
+  ]
+ },
+ {
+  "name": "Nyota Uhura, Communications",
+  "set": "trk",
+  "type_line": "Legendary Creature — Human Officer",
+  "mana_cost": "{2}{U}",
+  "cmc": 3.0,
+  "oracle_text": "Hailing Frequencies — As Nyota Uhura enters, choose a number between 0 and 10.\nOpen a Channel — Whenever an opponent casts a spell with mana value equal to the chosen number, you draw a card.",
+  "keywords": [
+   "Open a Channel",
+   "Hailing Frequencies"
+  ],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": "2",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "rare",
+  "esperado": [
+   "draw"
+  ]
+ },
+ {
+  "name": "Make It So",
+  "set": "trk",
+  "type_line": "Sorcery",
+  "mana_cost": "{3}{U}",
+  "cmc": 4.0,
+  "oracle_text": "Choose one —\n• Untap target permanent you control. Target player draws two cards.\n• Create a 1/1 red Officer creature token and draw two cards.",
+  "keywords": [],
+  "col": "U",
+  "ci": "U",
+  "produced": [],
+  "power": null,
+  "toughness": null,
+  "layout": "normal",
+  "rar": "common",
+  "esperado": [
+   "draw",
+   "tokens"
+  ]
+ },
+ {
+  "name": "U.S.S. Excelsior, Cutting Edge",
+  "set": "trk",
+  "type_line": "Legendary Artifact — Spacecraft",
+  "mana_cost": "{3}{W}",
+  "cmc": 4.0,
+  "oracle_text": "When U.S.S. Excelsior enters, destroy target tapped creature an opponent controls.\nStation (Tap another creature you control: Put charge counters equal to its power on this Spacecraft. Station only as a sorcery. It's an artifact creature at 8+.)\n8+ | Flying",
+  "keywords": [
+   "Station"
+  ],
+  "col": "W",
+  "ci": "W",
+  "produced": [],
+  "power": "4",
+  "toughness": "4",
+  "layout": "normal",
+  "rar": "uncommon",
+  "esperado": [
+   "vehicle",
+   "etb",
+   "removal",
+   "evasion"
+  ]
+ }
+]

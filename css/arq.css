@@ -1,0 +1,14 @@
+/* etiquetas e arquétipos */
+.chips-tag{display:flex;flex-wrap:wrap;gap:6px}
+.chip-tag{padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:var(--panel2);font:500 12px var(--f-mono);color:var(--fg)}
+.chip-tag span{color:var(--mute)}
+.chip-tag:hover,.chip-tag.on{border-color:var(--accent)}
+.arq-row{display:flex;align-items:center;gap:8px;padding:3px 0}
+.simil{margin-top:14px;display:grid;gap:6px;max-width:420px}
+.simil h4{margin:0;font:800 13px var(--f-disp);color:var(--mute)}
+.simil button.sim{display:block;text-align:left;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(16,19,26,.8)}
+.simil .why{display:block;color:var(--mute);font:11px var(--f-mono)}
+.tri-tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.tri-tags .tag{font-size:10px}
+.tri-tags{flex-wrap:nowrap;overflow-x:auto;max-width:92vw;justify-content:flex-start;scrollbar-width:none}
+.tri-tags .tag{white-space:nowrap;flex:none}
